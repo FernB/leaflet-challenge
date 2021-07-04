@@ -17,9 +17,9 @@ d3.json(geourl).then(function(data) {
                 return "#f03b20";          
             case (mag>3):
                 return "#fd8d3c";
-            case (mag>4):
+            case (mag>2):
                 return "#feb24c";          
-            case (mag>3):
+            case (mag>1):
                 return "#fed976";
             default:
                 return "#ffffb2";
@@ -91,8 +91,28 @@ d3.json(geourl).then(function(data) {
       });
 
       L.control.layers(baseMaps, overlayMaps, {
-        collapsed: false
+        collapsed: true
       }).addTo(myMap);
+
+var legend = L.control({position: 'bottomright'});
+
+    legend.onAdd = function (map) {
+
+        var div = L.DomUtil.create('div', 'info legend'),
+            grades = [0, 1.5, 2.5, 3.5, 4.5, 5.5],
+            labels = ["0-1","1-2","2-3","2-4","4-5","5+"];
+
+        // loop through our density intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+            div.innerHTML +=
+                '<i style="background:' + markerColor(grades[i]) + '"></i> ' +
+                labels[i] +"<br>";
+        }
+
+        return div;
+    };
+
+    legend.addTo(myMap);
 
 
 
