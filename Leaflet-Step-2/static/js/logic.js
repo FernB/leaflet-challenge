@@ -8,7 +8,7 @@ d3.json(platedata).then(data => makeLayer(data))
 
 function stylelines(feature) {
     return {
-        fillOpacity: 0,
+        fill: false,
         weight: 1,
         opacity: 1,
         color: 'yellow',
