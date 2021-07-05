@@ -16,8 +16,6 @@ function stylelines(feature) {
     };
 }
 
- 
-
 
 
   function makeLayer(jsondata) {
@@ -26,9 +24,10 @@ function stylelines(feature) {
   }
 
 
+
+
 d3.json(geourl).then(function(data) {
     console.log(data.features)
-
 
 
 
@@ -63,7 +62,7 @@ d3.json(geourl).then(function(data) {
 
       function onEachFeature(feature, layer) {
       
-            layer.bindPopup(feature.properties.place + "<br> Time: "+feature.properties.time +"<br> Magnitude: " + feature.properties.mag);
+            layer.bindPopup(feature.properties.place  +"<br> Magnitude: " + feature.properties.mag);
         
       };
 
@@ -75,15 +74,6 @@ d3.json(geourl).then(function(data) {
         pointToLayer: function (feature, latlng) { return L.circleMarker(latlng, circlemark(feature));
       }
       });
-    //   var popuplayer = L.geoJSON(data.features, {
-    //     onEachFeature: onEachFeature    
-
-    //   }
-        
-    //     );
-
-
-    //   var layerGroups = L.layerGroup([circlelayer,popuplayer]);
 
 
 
@@ -91,45 +81,52 @@ d3.json(geourl).then(function(data) {
 
 
 
+    // grayscale map layer
     var grayscale = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
         attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+        tileSize: 512,
         maxZoom: 18,
+        zoomOffset: -1,
         id: "light-v10",
         accessToken: API_KEY
       });
 
-
+      // satellite map layer
       var satellite = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
         attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
         maxZoom: 18,
-        id: "satellite-streets-v11",
+        id: "satellite-v9",
         accessToken: API_KEY
       });
 
 
-
+      // baseMaps layer group
       var baseMaps = {
         "Grayscale": grayscale,
         "Satellite": satellite,
       };
 
+      // overlayMaps layer group
       var overlayMaps = {
         "Earthquakes": earthquakes,
         "Fault Lines": faultlines,
     };
 
+      // set map area and intial layers
       var myMap = L.map("map", {
         center: [
           37.09, -95.71
         ],
         zoom: 5,
-        layers: [grayscale,earthquakes]
+        layers: [grayscale,earthquakes,faultlines]
       });
 
+      // add layer controls
       L.control.layers(baseMaps, overlayMaps, {
         collapsed: true
       }).addTo(myMap);
 
+// add legend
 var legend = L.control({position: 'bottomright'});
 
     legend.onAdd = function (map) {
@@ -149,8 +146,6 @@ var legend = L.control({position: 'bottomright'});
     };
 
     legend.addTo(myMap);
-
-
 
 
 });
