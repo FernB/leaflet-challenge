@@ -25,7 +25,6 @@ function stylelines(feature) {
 
 
 
-
 d3.json(geourl).then(function(data) {
     console.log(data.features)
 
@@ -51,7 +50,7 @@ d3.json(geourl).then(function(data) {
 
     function circlemark(feature) {
         return {
-            radius: feature.properties.mag*2,
+            radius: feature.properties.mag*5,
             weight: 1,
             opacity: 1,
             color: 'black',
@@ -65,20 +64,12 @@ d3.json(geourl).then(function(data) {
             layer.bindPopup(feature.properties.place  +"<br> Magnitude: " + feature.properties.mag);
         
       };
-
-
-
       
       var earthquakes = L.geoJSON(data.features, {
         onEachFeature: onEachFeature,
         pointToLayer: function (feature, latlng) { return L.circleMarker(latlng, circlemark(feature));
       }
       });
-
-
-
-
-
 
 
     // grayscale map layer
