@@ -30,3 +30,11 @@ html {
   border-radius: 5px;
 
 }
+
+.legend ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+
+

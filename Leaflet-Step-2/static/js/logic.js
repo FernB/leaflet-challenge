@@ -135,12 +135,20 @@ var legend = L.control({position: 'bottomright'});
             grades = [0, 1.5, 2.5, 3.5, 4.5, 5.5],
             labels = ["0-1","1-2","2-3","2-4","4-5","5+"];
 
-        // loop through our density intervals and generate a label with a colored square for each interval
+        var listitems =[];
+
         for (var i = 0; i < grades.length; i++) {
-            div.innerHTML +=
-                '<i style="background:' + markerColor(grades[i]) + '"></i> ' +
-                labels[i] +"<br>";
+
+
+            var item =
+            "<li>" + '<i style="background:' + markerColor(grades[i]) + '"></i> ' +
+               labels[i] +"</li>";
+
+               listitems.push(item);
         }
+
+
+        div.innerHTML += "<ul>" + listitems+ "</ul>"
 
         return div;
     };
