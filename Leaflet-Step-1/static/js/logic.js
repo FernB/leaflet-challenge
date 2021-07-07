@@ -14,19 +14,19 @@ d3.json(geourl).then(function(data) {
 
     // fucntion to set marker colours
   function markerColor(mag){
-      switch (true) {
-          case (mag>5):
-              return "#bd0026";
-          case (mag>4):
-              return "#f03b20";          
-          case (mag>3):
-              return "#fd8d3c";
-          case (mag>2):
-              return "#feb24c";          
-          case (mag>1):
-              return "#fed976";
-          default:
-              return "#ffffb2";  
+    switch (true) {
+      case (mag>5):
+          return "#d73027";
+      case (mag>4):
+          return "#fc8d59";          
+      case (mag>3):
+          return "#fee08b";
+      case (mag>2):
+          return "#d9ef8b";          
+      case (mag>1):
+          return "#91cf60";
+      default:
+          return "#1a9850";
     }}
 
   // function to create circle markers
