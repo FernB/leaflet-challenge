@@ -9,6 +9,7 @@ html {
   height: 100%;
 }
 
+/* legend style */
 .legend {
   line-height: 18px;
   color: #555;
@@ -35,6 +36,9 @@ html {
   list-style-type: none;
   padding-left: 0;
 }
+
+
+
 
 
 

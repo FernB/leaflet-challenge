@@ -1,9 +1,12 @@
 
+// earthquake api end point
 var geourl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
+// plate data json file path
 var platedata = "static/data/PB2002_plates.json";
 var faultlines = [];
 
+// use d3 to read plates json data and call function to create layer
 d3.json(platedata).then(data => makeLayer(data))
 
 function stylelines(feature) {
@@ -16,49 +19,47 @@ function stylelines(feature) {
     };
 }
 
-
-
   function makeLayer(jsondata) {
     faultlines = L.geoJson(jsondata, {style:stylelines});
 
   }
 
 
-
+// use d3 to call data from earthquake api
 d3.json(geourl).then(function(data) {
     console.log(data.features)
 
 
-
+    // set colour scales
     function markerColor(mag){
         switch (true) {
             case (mag>5):
-                return "#bd0026";
+                return "#d73027";
             case (mag>4):
-                return "#f03b20";          
+                return "#fc8d59";          
             case (mag>3):
-                return "#fd8d3c";
+                return "#fee08b";
             case (mag>2):
-                return "#feb24c";          
+                return "#d9ef8b";          
             case (mag>1):
-                return "#fed976";
+                return "#91cf60";
             default:
-                return "#ffffb2";
+                return "#1a9850";
         
     }}
 
-
+    // add circle markers with radius and colour relating to magnitude
     function circlemark(feature) {
         return {
             radius: feature.properties.mag*5,
-            weight: 1,
+            stroke: null,
             opacity: 1,
-            color: 'black',
-            fillOpacity: 0.7,
+            fillOpacity: 0.8,
             fillColor: markerColor(feature.properties.mag)
         };
       };
 
+      // add popup
       function onEachFeature(feature, layer) {
       
             layer.bindPopup(feature.properties.place  +"<br> Magnitude: " + feature.properties.mag);
@@ -85,8 +86,20 @@ d3.json(geourl).then(function(data) {
       // satellite map layer
       var satellite = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
         attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+        tileSize: 512,
         maxZoom: 18,
+        zoomOffset: -1,
         id: "satellite-v9",
+        accessToken: API_KEY
+      });
+
+      // outdoors map layer
+      var outdoors = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+        attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+        tileSize: 512,
+        maxZoom: 18,
+        zoomOffset: -1,
+        id: "outdoors-v11",
         accessToken: API_KEY
       });
 
@@ -95,6 +108,7 @@ d3.json(geourl).then(function(data) {
       var baseMaps = {
         "Grayscale": grayscale,
         "Satellite": satellite,
+        "Outdoors": outdoors,
       };
 
       // overlayMaps layer group
@@ -109,7 +123,7 @@ d3.json(geourl).then(function(data) {
           37.09, -95.71
         ],
         zoom: 5,
-        layers: [grayscale,earthquakes,faultlines]
+        layers: [satellite,earthquakes,faultlines]
       });
 
       // add layer controls

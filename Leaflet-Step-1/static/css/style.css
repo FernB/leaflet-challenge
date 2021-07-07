@@ -9,6 +9,7 @@ html {
   height: 100%;
 }
 
+/* legend styles */
 .legend {
   line-height: 18px;
   color: #555;
@@ -30,8 +31,7 @@ html {
   border-radius: 5px;
 
 }
-/* .info h4 {
-  margin: 0 0 5px;
-  color: rgb(119, 119, 119);
-
-} */
+.legend ul {
+  list-style-type: none;
+  padding-left: 0;
+}
